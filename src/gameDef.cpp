@@ -55,17 +55,18 @@ Utils::Circle Character::getCollisionCircle() {
     return collisionCircle;
 }
 
+void Character::MoveSprite(int increaseInX, int increaseInY) {
+    coords.x += increaseInX;
+    coords.y += increaseInY;
+}
+
 Visual::ScreenCoordPlane::ScreenCoordPlane ( Utils::Image* mainWindow ) {
     Utils::Size windowSize;
     SDL_GetWindowSize( mainWindow->window, &windowSize.width, 
             &windowSize.height);
+    // X is at 0 because x works as usual and 
     logicalOrigin = {0, windowSize.height};
 }
-
-//Visual::ScreenCoordPlane( Utils::Image* mainWindow ) {
-//    SDL_GetWindowSize(mainWindow->window, &logicalOrigin.width, 
-//            &logicalOrigin.height);
-//}
 
 void Visual::InitScreen( Utils::Image* ImageInfo, 
         std::string* title, Utils::Size* windowSize)
@@ -74,7 +75,7 @@ void Visual::InitScreen( Utils::Image* ImageInfo,
         std::string exitMsg{"Video Could not be initialized"};
         Utils::exitProgram(&exitMsg, 0);
     }
-    ImageInfo->window= SDL_CreateWindow(title->c_str(), 
+    ImageInfo->window = SDL_CreateWindow(title->c_str(), 
             SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
             windowSize->width, windowSize->height, SDL_WINDOW_SHOWN );
 
