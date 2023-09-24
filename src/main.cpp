@@ -18,7 +18,7 @@ int main( int argc, char* argv[] ) {
     bool quit{false};
     SDL_Event currentEvent;
     while( !quit ){
-        std::thread th1(usleep, 100000);
+        std::thread SleepThread(usleep, 100000);
         while ( SDL_PollEvent( &currentEvent ) ) {
             Visual::CheckQuit( &currentEvent, &quit );
             Visual::CheckKeyDown( &currentEvent );
@@ -26,7 +26,7 @@ int main( int argc, char* argv[] ) {
         SDL_BlitSurface(Game::Background.imageSurface, NULL, 
                 Game::MainScreen.imageSurface, NULL);
         SDL_UpdateWindowSurface(Game::MainScreen.window);
-        th1.join();
+        SleepThread.join();
     }
     Visual::CloseProgram(&Game::MainScreen.window, 
             &Game::MainScreen.imageSurface);
