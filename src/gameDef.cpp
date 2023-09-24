@@ -28,6 +28,45 @@ Utils::Image Game::Character {
     .imagePath = "resources/Brian.png"
 };
 
+Utils::Coordinates Character::getCenterOfSprite(void) {
+    Utils::Coordinates center{0,0};
+    Utils::Size halfSize { 
+        .height = spriteInfo.surfaceSize.height/2,
+        .width = spriteInfo.surfaceSize.height/2 
+    };
+    center = {
+        // Yes the swap between them is intentional. Remeber that the default
+        // grid in SDL2 has a point of origin at the top left of the screen 
+        // and as y increases, it goes down. X does the same as usual.
+        .x = ( halfSize.width + coords.x ),
+        .y = ( coords.y - halfSize.height ) 
+    };
+    return center;
+}
+
+Utils::Circle Character::getCollisionCircle() {
+    Utils::Circle collisionCircle { {0, 0}, 0 };
+    Utils::Coordinates center = getCenterOfSprite();
+    collisionCircle = { 
+        .centerPoint = center,
+        // Takes the avergae of the x and y, and divideds it by 2
+        .radius = ( (coords.x + coords.y) / 2 ) / 2
+    };
+    return collisionCircle;
+}
+
+Visual::ScreenCoordPlane::ScreenCoordPlane ( Utils::Image* mainWindow ) {
+    Utils::Size windowSize;
+    SDL_GetWindowSize( mainWindow->window, &windowSize.width, 
+            &windowSize.height);
+    logicalOrigin = {0, windowSize.height};
+}
+
+//Visual::ScreenCoordPlane( Utils::Image* mainWindow ) {
+//    SDL_GetWindowSize(mainWindow->window, &logicalOrigin.width, 
+//            &logicalOrigin.height);
+//}
+
 void Visual::InitScreen( Utils::Image* ImageInfo, 
         std::string* title, Utils::Size* windowSize)
 {

@@ -35,6 +35,18 @@ namespace Utils {
         SDL_Window* window{NULL};
         Utils::Size surfaceSize{0, 0};
     };
+
+    struct Coordinates {
+        int x;
+        int y;
+    };
+
+    // used for collision detection
+    struct Circle {
+        // For the middle Point
+        Utils::Coordinates centerPoint{0, 0};
+        int radius{0};
+    };
 }
 
 namespace Game {
@@ -45,6 +57,18 @@ namespace Game {
     extern std::string windowTitle;
     extern Utils::Size windowSize;
 }
+
+class Character {
+private:
+
+protected:
+    Utils::Image spriteInfo;
+public:
+   Utils::Coordinates coords{0, 0};
+   Utils::Coordinates getCenterOfSprite();
+   Utils::Circle getCollisionCircle();
+   void MoveSprite(int increaseInX, int increaseInY);
+};
 
 namespace Visual {
     // MUST have douboe pointer for passing pointers
@@ -59,6 +83,14 @@ namespace Visual {
     void CheckQuit( SDL_Event* currentEvent, bool* quit );
     void CloseProgram(SDL_Window** mainWindowPtr, 
             SDL_Surface** backgroundPicturePtr);
+
+    struct ScreenCoordPlane {
+        // The coordinate system will be like a Sector 1 coordinate plane,
+        // with the point of origin being in the bottom left of the window
+        Utils::Coordinates logicalOrigin{0, 0};
+        ScreenCoordPlane( Utils::Image* mainWindow );
+
+    };
 }
 
 
