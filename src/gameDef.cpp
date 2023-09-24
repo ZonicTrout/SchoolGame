@@ -2,6 +2,7 @@
 // GameDef.cpp
 //
 #include "../include/gameDef.hpp"
+#include <SDL2/SDL_surface.h>
 
 void Utils::exitProgram(std::string* exitMsg, int exitCode) {
     std::cout << *exitMsg << " : "  << SDL_GetError() << std::endl; 
@@ -28,6 +29,14 @@ Utils::Image Game::Character {
     .imagePath = "resources/BrianBig.png"
 };
 
+Utils::Image::~Image() {
+    if ( imageSurface != NULL ) {
+        SDL_FreeSurface(imageSurface);
+    }
+    if ( window != NULL ) {
+        SDL_DestroyWindow(window);
+    }
+}
 
 ::Character Game::Player( &Game::Character, &Game::MainScreen,
         {Game::windowSize.width / 2 ,Game::windowSize.height / 2});
@@ -125,6 +134,9 @@ void Visual::CheckQuit ( SDL_Event* currentEvent, bool* quit ) {
     }
 }
 
+// TODO 
+// Have this check if wasd keys were pressed down, and if so change Character
+// coords
 void Visual::CheckKeyDown (SDL_Event* currentEvent ) {
     if ( currentEvent->type == SDL_KEYDOWN ) {
         std::cout << currentEvent->key.keysym.sym << std::endl; 
@@ -176,10 +188,16 @@ void Visual::LoadImageSurface( Utils::Image* ImageInfo,
     }
 }
     
-    void Visual::CloseProgram(SDL_Window** mainWindowPtr, 
-            SDL_Surface** backgroundPicturePtr) {
-    SDL_FreeSurface( *backgroundPicturePtr );
-    SDL_DestroyWindow( *mainWindowPtr );
+    void Visual::CloseProgram( void ) {
+    // Removed because already done in Utils::Image structure
+    //SDL_FreeSurface( *backgroundPicturePtr );
+    //SDL_DestroyWindow( *mainWindowPtr );
+
+    // Calls Destructors for Image Structures
+    Game::MainScreen.~Image();
+    Game::Background.~Image();
+    Game::Character.~Image();
+
     SDL_Quit(); 
 }
 

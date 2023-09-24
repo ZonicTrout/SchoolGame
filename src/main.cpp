@@ -34,6 +34,5 @@ int main( int argc, char* argv[] ) {
             
         SleepThread.join();
     }
-    Visual::CloseProgram(&Game::MainScreen.window, 
-            &Game::MainScreen.imageSurface);
+    Visual::CloseProgram(); 
 }

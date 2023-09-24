@@ -34,6 +34,7 @@ namespace Utils {
         SDL_Surface* imageSurface{NULL};
         SDL_Window* window{NULL};
         Utils::Size surfaceSize{0, 0};
+        ~Image();
     };
 
     struct Coordinates {
@@ -79,8 +80,7 @@ namespace Visual {
            Utils::Image* MainWindow=NULL );
     void CheckKeyDown( SDL_Event* currentEvent );
     void CheckQuit( SDL_Event* currentEvent, bool* quit );
-    void CloseProgram(SDL_Window** mainWindowPtr, 
-            SDL_Surface** backgroundPicturePtr);
+    void CloseProgram( void );
 
     struct ScreenCoordPlane {
         // The coordinate system will be like a Sector 1 coordinate plane,
@@ -92,6 +92,8 @@ namespace Visual {
 }
 
 namespace Game {
+    // TODO convert the followinf to pointers so it is easier to free
+    // them when Visual::CloseProgram() is called
     extern ::Utils::Image MainScreen;
     extern ::Utils::Image Background;
 
