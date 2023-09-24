@@ -25,14 +25,18 @@ Utils::Image Game::Background {
 };
 
 Utils::Image Game::Character {
-    .imagePath = "resources/Brian.png"
+    .imagePath = "resources/BrianBig.png"
 };
+
+
+::Character Game::Player( &Game::Character, &Game::MainScreen,
+        {Game::windowSize.width / 2 ,Game::windowSize.height / 2});
 
 Utils::Coordinates Character::getCenterOfSprite(void) {
     Utils::Coordinates center{0,0};
     Utils::Size halfSize { 
-        .height = spriteInfo.surfaceSize.height/2,
-        .width = spriteInfo.surfaceSize.height/2 
+        .height = spriteInfo->surfaceSize.height/2,
+        .width = spriteInfo->surfaceSize.height/2 
     };
     center = {
         // Yes the swap between them is intentional. Remeber that the default
@@ -58,6 +62,34 @@ Utils::Circle Character::getCollisionCircle() {
 void Character::MoveSprite(int increaseInX, int increaseInY) {
     coords.x += increaseInX;
     coords.y += increaseInY;
+}
+
+void Character::drawSprite ( Utils::Image* MainWindowImage) {
+    // I used this the Size params because I got seg faults from doing
+    // surface->h
+    spriteRect = {200, 200, spriteInfo->surfaceSize.width,
+        spriteInfo->surfaceSize.height};
+    if ( spriteInfo->imageSurface == NULL ) {
+        std::string exitMsg = "Forgot to set Character Surface";
+        Utils::exitProgram(&exitMsg);
+    }
+
+    SDL_BlitSurface(spriteInfo->imageSurface, NULL, MainWindowImage->imageSurface,
+            &spriteRect);
+}
+
+::Character::Character ( Utils::Image* characterInfo, 
+        Utils::Image* mainWindowParam, Utils::Coordinates characterCoords) {
+    spriteInfo = characterInfo;
+    mainWindow = mainWindowParam;
+    coords = characterCoords;
+    // I used this the Size params because I got seg faults from doing
+    // surface->h
+    spriteRect = {coords.x, coords.y, spriteInfo->surfaceSize.width,
+        spriteInfo->surfaceSize.height};
+
+    characterName = "Mable";
+    std::cout << "Hello There, " << characterName << "!" << std::endl;
 }
 
 Visual::ScreenCoordPlane::ScreenCoordPlane ( Utils::Image* mainWindow ) {
@@ -132,7 +164,7 @@ void Visual::LoadImageSurface( Utils::Image* ImageInfo,
     }
     
     ImageInfo->imageSurface = bufferSurface;
-    
+    ImageInfo->surfaceSize = { ImageInfo->imageSurface->h, ImageInfo->imageSurface->w }; 
     if (isBackground) {
         //Visual::StretchImage(&ImageInfo, &MainWindow->surfaceSize);
         std::cout << "T'is a background" << std::endl;

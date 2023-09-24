@@ -2,7 +2,7 @@ CC = clang++
 source = $(wildcard src/*.c*)
 LIB = -lSDL2 -lSDL2_image -Iresources -Iinclude
 NOWARN_FLAGS = $(LIB)
-FLAGS = -Wall -Wextra $(LIB) 
+FLAGS = -Wall -Wextra -Wpedantic $(LIB) 
 EXEC = game
 
 compile = $(CC) $(source) -o $(EXEC)
@@ -13,7 +13,10 @@ all:
 noWarn:
 	$(compile) $(NOWARN_FLAGS)
 
+debug:
+	$(compile) $(FLAGS) -gdwarf
+
 run:
-	$(compile) $(NOWARN_FLAGS)
+	$(compile) $(FLAGS)   #$(NOWARN_FLAGS)
 	./$(EXEC)
 

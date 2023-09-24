@@ -49,25 +49,23 @@ namespace Utils {
     };
 }
 
-namespace Game {
-    extern Utils::Image MainScreen;
-    extern Utils::Image Background;
-    extern Utils::Image Character;
-
-    extern std::string windowTitle;
-    extern Utils::Size windowSize;
-}
-
 class Character {
 private:
 
 protected:
-    Utils::Image spriteInfo;
+    Utils::Image* spriteInfo;
+    Utils::Image* mainWindow;
+    std::string characterName;
+    SDL_Rect spriteRect;
 public:
    Utils::Coordinates coords{0, 0};
    Utils::Coordinates getCenterOfSprite();
    Utils::Circle getCollisionCircle();
+   void drawSprite( Utils::Image* MainWindowImage);
    void MoveSprite(int increaseInX, int increaseInY);
+
+   Character( Utils::Image* characterInfo, Utils::Image* mainWindowParam, 
+           Utils::Coordinates characterCoords = {0, 0} );
 };
 
 namespace Visual {
@@ -93,6 +91,15 @@ namespace Visual {
     };
 }
 
+namespace Game {
+    extern ::Utils::Image MainScreen;
+    extern ::Utils::Image Background;
 
+    extern ::std::string windowTitle;
+    extern ::Utils::Size windowSize;
+
+    extern ::Utils::Image Character;
+    extern ::Character Player; 
+}
 
 #endif
