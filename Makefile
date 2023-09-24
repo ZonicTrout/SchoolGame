@@ -1,4 +1,4 @@
-CC = g++
+CC = clang++
 source = $(wildcard src/*.c*)
 LIB = -lSDL2 -lSDL2_image -Iresources -Iinclude
 NOWARN_FLAGS = $(LIB)

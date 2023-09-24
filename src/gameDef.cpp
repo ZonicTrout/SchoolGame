@@ -8,6 +8,7 @@ void Utils::exitProgram(std::string* exitMsg, int exitCode) {
     exit(exitCode);
 }
 
+
 std::string Game::windowTitle = "Brian's Hunt";
 
 Utils::Size Game::windowSize = {
