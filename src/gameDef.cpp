@@ -39,7 +39,8 @@ Utils::Image::~Image() {
 }
 
 ::Character Game::Player( &Game::Character, &Game::MainScreen,
-        {Game::windowSize.width / 2 ,Game::windowSize.height / 2});
+        {Game::windowSize.width / 2 ,Game::windowSize.height / 2}, 
+        20);
 
 Utils::Coordinates Character::getCenterOfSprite(void) {
     Utils::Coordinates center{0,0};
@@ -76,7 +77,7 @@ void Character::MoveSprite(int increaseInX, int increaseInY) {
 void Character::drawSprite ( Utils::Image* MainWindowImage) {
     // I used this the Size params because I got seg faults from doing
     // surface->h
-    spriteRect = {200, 200, spriteInfo->surfaceSize.width,
+    spriteRect = {coords.x, coords.y, spriteInfo->surfaceSize.width,
         spriteInfo->surfaceSize.height};
     if ( spriteInfo->imageSurface == NULL ) {
         std::string exitMsg = "Forgot to set Character Surface";
@@ -88,10 +89,12 @@ void Character::drawSprite ( Utils::Image* MainWindowImage) {
 }
 
 ::Character::Character ( Utils::Image* characterInfo, 
-        Utils::Image* mainWindowParam, Utils::Coordinates characterCoords) {
+        Utils::Image* mainWindowParam, Utils::Coordinates characterCoords,
+        int movePixels) {
     spriteInfo = characterInfo;
     mainWindow = mainWindowParam;
     coords = characterCoords;
+    pixelsPerMove = movePixels;
     // I used this the Size params because I got seg faults from doing
     // surface->h
     spriteRect = {coords.x, coords.y, spriteInfo->surfaceSize.width,
@@ -137,9 +140,34 @@ void Visual::CheckQuit ( SDL_Event* currentEvent, bool* quit ) {
 // TODO 
 // Have this check if wasd keys were pressed down, and if so change Character
 // coords
-void Visual::CheckKeyDown (SDL_Event* currentEvent ) {
+void Visual::CheckKeyDown (SDL_Event* currentEvent, Character* characterToMove ) {
     if ( currentEvent->type == SDL_KEYDOWN ) {
         std::cout << currentEvent->key.keysym.sym << std::endl; 
+        //Maye add variable to see that last pressed key?
+        SDL_Keycode currentKey = currentEvent->key.keysym.sym;
+
+        switch (currentKey) {
+            case ( SDLK_w):
+                // Do move logic for each case
+                std::cout << "Pressed W/Up" << std::endl;
+                characterToMove->MoveSprite(0, -10);
+                break;
+            case (SDLK_a):
+                std::cout << "Pressed A/Left" <<   std::endl;
+                characterToMove->MoveSprite(-10, 0);
+                break;
+            case (SDLK_s):
+                std::cout << "Pressed S/Down" <<   std::endl;
+                characterToMove->MoveSprite(0, 10);
+                break;
+            case (SDLK_d):
+                std::cout << "Pressed D/Right" <<   std::endl;
+                characterToMove->MoveSprite(10, 0);
+                break;
+            default:
+                PASS;
+                break;
+        }
     }
     return;
 }

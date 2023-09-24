@@ -21,16 +21,15 @@ int main( int argc, char* argv[] ) {
     bool quit{false};
     SDL_Event currentEvent;
     while( !quit ){
-        std::thread SleepThread(usleep, 1000000);
+        std::thread SleepThread(usleep, 100000);
         while ( SDL_PollEvent( &currentEvent ) ) {
             Visual::CheckQuit( &currentEvent, &quit );
-            Visual::CheckKeyDown( &currentEvent );
+            Visual::CheckKeyDown( &currentEvent, &Game::Player );
         }
         SDL_BlitSurface(Game::Background.imageSurface, NULL, 
                 Game::MainScreen.imageSurface, NULL);
         Game::Player.drawSprite( &Game::MainScreen );
         SDL_UpdateWindowSurface(Game::MainScreen.window);
-        std::cout << "Loop" << std::endl; 
             
         SleepThread.join();
     }

@@ -52,7 +52,7 @@ namespace Utils {
 
 class Character {
 private:
-
+    int pixelsPerMove{0};
 protected:
     Utils::Image* spriteInfo;
     Utils::Image* mainWindow;
@@ -65,8 +65,9 @@ public:
    void drawSprite( Utils::Image* MainWindowImage);
    void MoveSprite(int increaseInX, int increaseInY);
 
-   Character( Utils::Image* characterInfo, Utils::Image* mainWindowParam, 
-           Utils::Coordinates characterCoords = {0, 0} );
+   Character( Utils::Image* characterInfo, Utils::Image* mainWindowParam,
+           Utils::Coordinates characterCoords = {0, 0}, 
+           int movePixels = 20);
 };
 
 namespace Visual {
@@ -78,7 +79,7 @@ namespace Visual {
     void StretchImage( Utils::Image** ImageInfo, Utils::Size* newSize);
     void LoadImageSurface( Utils::Image* ImageInfo, bool isBackground=false,
            Utils::Image* MainWindow=NULL );
-    void CheckKeyDown( SDL_Event* currentEvent );
+    void CheckKeyDown( SDL_Event* currentEvent, Character* characterToMove );
     void CheckQuit( SDL_Event* currentEvent, bool* quit );
     void CloseProgram( void );
 
