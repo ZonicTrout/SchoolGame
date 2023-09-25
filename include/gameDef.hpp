@@ -29,13 +29,6 @@ namespace Utils {
         int Green;
         int Blue;
     } ;
-    struct Image {
-        std::string imagePath;
-        SDL_Surface* imageSurface{NULL};
-        SDL_Window* window{NULL};
-        Utils::Size surfaceSize{0, 0};
-        ~Image();
-    };
 
     struct Coordinates {
         int x;
@@ -44,9 +37,21 @@ namespace Utils {
 
     // used for collision detection
     struct Circle {
-        // For the middle Point
         Utils::Coordinates centerPoint{0, 0};
         int radius{0};
+    };
+    struct Rectangle {
+        Utils::Coordinates topLeftCoords;
+        Utils::Coordinates bottomRightCoords;
+    };
+    
+    struct Image {
+        std::string imagePath;
+        SDL_Surface* imageSurface{NULL};
+        SDL_Window* window{NULL};
+        Utils::Size surfaceSize{0, 0};
+        Utils::Rectangle walkAble{  {0, 0}, {0, 0} };
+        ~Image();
     };
 }
 
@@ -60,6 +65,7 @@ protected:
     SDL_Rect spriteRect;
 public:
    Utils::Coordinates coords{0, 0};
+   Utils::Coordinates bottomCoords{0, 0};
    Utils::Coordinates getCenterOfSprite();
    Utils::Circle getCollisionCircle();
    void drawSprite( Utils::Image* MainWindowImage);

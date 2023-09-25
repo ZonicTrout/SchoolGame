@@ -18,15 +18,17 @@ Utils::Size Game::windowSize = {
 };
 
 Utils::Image Game::MainScreen {
-    .surfaceSize = Game::windowSize
+    .surfaceSize = Game::windowSize,
+    .walkAble = { {.x=0, .y=150}, 
+        {.x=517, .y=720} }
 };
 
 Utils::Image Game::Background {
-    .imagePath = "resources/BackgroundBig.png"
+    .imagePath = "resources/BackgroundFullBig.png",
 };
 
 Utils::Image Game::Character {
-    .imagePath = "resources/BrianBig.png"
+    .imagePath = "resources/BrianGoodSize.png"
 };
 
 Utils::Image::~Image() {
@@ -70,8 +72,38 @@ Utils::Circle Character::getCollisionCircle() {
 }
 
 void Character::MoveSprite(int increaseInX, int increaseInY) {
+    // Check if both x and y are inside walkable Rectangle, and if not set it to
+    // the max or minimum of the Rectangle
     coords.x += increaseInX;
     coords.y += increaseInY;
+
+    std::cout << coords.x <<   std::endl;
+    std::cout << mainWindow->walkAble.topLeftCoords.x <<   std::endl;
+    std::cout << mainWindow->walkAble.bottomRightCoords.x <<   std::endl;
+
+    // Check if Character X Coord is less than the walkable minimum, and if so sets it
+    // to the minimum
+    if ( coords.x <= mainWindow->walkAble.topLeftCoords.x)  {
+        coords.x = mainWindow->walkAble.topLeftCoords.x;
+    }
+
+    // Check if Character X Coord is greater than the maximum walkable X, and if so
+    // sets it to the max
+    if ( coords.x >= mainWindow->walkAble.bottomRightCoords.x ) {
+        coords.x = mainWindow->walkAble.bottomRightCoords.x;
+    }
+    
+    // Check if Character Y Coord is less than the walkable minimum, and if so sets it
+    // to the minimum
+    if ( coords.y <= mainWindow->walkAble.topLeftCoords.y)  {
+        coords.y = mainWindow->walkAble.topLeftCoords.y;
+    }
+
+    // Check if Character X Coord is greater than the maximum walkable X, and if so
+    // sets it to the max
+    if ( coords.y >= mainWindow->walkAble.bottomRightCoords.y ) {
+        coords.y = mainWindow->walkAble.bottomRightCoords.y;
+    }
 }
 
 void Character::drawSprite ( Utils::Image* MainWindowImage) {
@@ -94,6 +126,8 @@ void Character::drawSprite ( Utils::Image* MainWindowImage) {
     spriteInfo = characterInfo;
     mainWindow = mainWindowParam;
     coords = characterCoords;
+    bottomCoords = { coords.x+spriteInfo->surfaceSize.width,
+        coords.y+spriteInfo->surfaceSize.height };
     pixelsPerMove = movePixels;
     // I used this the Size params because I got seg faults from doing
     // surface->h
@@ -142,26 +176,21 @@ void Visual::CheckQuit ( SDL_Event* currentEvent, bool* quit ) {
 // coords
 void Visual::CheckKeyDown (SDL_Event* currentEvent, Character* characterToMove ) {
     if ( currentEvent->type == SDL_KEYDOWN ) {
-        std::cout << currentEvent->key.keysym.sym << std::endl; 
         //Maye add variable to see that last pressed key?
         SDL_Keycode currentKey = currentEvent->key.keysym.sym;
 
         switch (currentKey) {
             case ( SDLK_w):
                 // Do move logic for each case
-                std::cout << "Pressed W/Up" << std::endl;
                 characterToMove->MoveSprite(0, -10);
                 break;
             case (SDLK_a):
-                std::cout << "Pressed A/Left" <<   std::endl;
                 characterToMove->MoveSprite(-10, 0);
                 break;
             case (SDLK_s):
-                std::cout << "Pressed S/Down" <<   std::endl;
                 characterToMove->MoveSprite(0, 10);
                 break;
             case (SDLK_d):
-                std::cout << "Pressed D/Right" <<   std::endl;
                 characterToMove->MoveSprite(10, 0);
                 break;
             default:
