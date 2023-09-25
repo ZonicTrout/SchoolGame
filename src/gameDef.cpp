@@ -28,7 +28,7 @@ Utils::Image Game::Background {
 };
 
 Utils::Image Game::Character {
-    .imagePath = "resources/BrianBigBlue.png",
+    .imagePath = "resources/BrianGoodSize.png",
     .surfaceSize = {176, 176}
 };
 

@@ -19,13 +19,9 @@ int main( int argc, char* argv[] ) {
     // 100% of the CPU
     bool quit{false};
     SDL_Event currentEvent;
-    int i = 0;
-    std::cout << Game::Player.spriteInfo->surfaceSize.height <<   std::endl;
     while( !quit ){
         std::thread SleepThread(usleep, 100000);
-        //i = 0;
         while ( SDL_PollEvent( &currentEvent ) ) {
-            i++;
             Visual::CheckQuit( &currentEvent, &quit );
             Visual::CheckKeyDown( &currentEvent, &Game::Player );
         }
@@ -37,5 +33,4 @@ int main( int argc, char* argv[] ) {
         SleepThread.join();
     }
     Visual::CloseProgram(); 
-    std::cout << i <<   std::endl;
 }
