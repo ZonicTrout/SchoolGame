@@ -63,11 +63,18 @@ protected:
     Utils::Image* mainWindow;
     std::string characterName;
     SDL_Rect spriteRect;
+    
+    void MoveSpriteInTopLeftBounds();
+    void MoveSpriteInBotomRightBounds();
+    void MoveSpriteInBounds();
 public:
    Utils::Coordinates coords{0, 0};
    Utils::Coordinates bottomCoords{0, 0};
    Utils::Coordinates getCenterOfSprite();
    Utils::Circle getCollisionCircle();
+   
+   void syncBottomCoords();
+   void syncTopCoords();
    void drawSprite( Utils::Image* MainWindowImage);
    void MoveSprite(int increaseInX, int increaseInY);
 

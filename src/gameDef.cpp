@@ -28,7 +28,7 @@ Utils::Image Game::Background {
 };
 
 Utils::Image Game::Character {
-    .imagePath = "resources/BrianGoodSize.png"
+    .imagePath = "resources/BrianBigBlue.png"
 };
 
 Utils::Image::~Image() {
@@ -71,32 +71,37 @@ Utils::Circle Character::getCollisionCircle() {
     return collisionCircle;
 }
 
-void Character::MoveSprite(int increaseInX, int increaseInY) {
-    // Check if both x and y are inside walkable Rectangle, and if not set it to
-    // the max or minimum of the Rectangle
-    coords.x += increaseInX;
-    coords.y += increaseInY;
+void Character::syncBottomCoords() {
+    bottomCoords = { coords.x+mainWindow->surfaceSize.width,
+        coords.y+mainWindow->surfaceSize.height };
+}
 
-    std::cout << coords.x <<   std::endl;
-    std::cout << mainWindow->walkAble.topLeftCoords.x <<   std::endl;
-    std::cout << mainWindow->walkAble.bottomRightCoords.x <<   std::endl;
+void Character::syncTopCoords() {
+    coords = { bottomCoords.x-mainWindow->surfaceSize.width,
+        bottomCoords.y-mainWindow->surfaceSize.height };
+}
 
+void Character::MoveSpriteInBounds() {
     // Check if Character X Coord is less than the walkable minimum, and if so sets it
     // to the minimum
+    
+    // TODO 
+    // There is a bug when X is changed and Y is not working properly
+    
     if ( coords.x <= mainWindow->walkAble.topLeftCoords.x)  {
         coords.x = mainWindow->walkAble.topLeftCoords.x;
     }
-
-    // Check if Character X Coord is greater than the maximum walkable X, and if so
-    // sets it to the max
-    if ( coords.x >= mainWindow->walkAble.bottomRightCoords.x ) {
-        coords.x = mainWindow->walkAble.bottomRightCoords.x;
-    }
-    
     // Check if Character Y Coord is less than the walkable minimum, and if so sets it
     // to the minimum
     if ( coords.y <= mainWindow->walkAble.topLeftCoords.y)  {
         coords.y = mainWindow->walkAble.topLeftCoords.y;
+    }
+    syncBottomCoords();
+
+    // Check if Character X Coord is greater than the maximum walkable X, and if so
+    // sets it to the max
+    if ( bottomCoords.x >= mainWindow->walkAble.bottomRightCoords.x ) {
+        bottomCoords.x = mainWindow->walkAble.bottomRightCoords.x;
     }
 
     // Check if Character X Coord is greater than the maximum walkable X, and if so
@@ -104,6 +109,17 @@ void Character::MoveSprite(int increaseInX, int increaseInY) {
     if ( coords.y >= mainWindow->walkAble.bottomRightCoords.y ) {
         coords.y = mainWindow->walkAble.bottomRightCoords.y;
     }
+    syncTopCoords();
+}
+
+void Character::MoveSprite(int increaseInX, int increaseInY) {
+    // Check if both x and y are inside walkable Rectangle, and if not set it to
+    // the max or minimum of the Rectangle
+    coords.x += increaseInX;
+    coords.y += increaseInY;
+    
+    syncBottomCoords();
+    MoveSpriteInBounds();
 }
 
 void Character::drawSprite ( Utils::Image* MainWindowImage) {
