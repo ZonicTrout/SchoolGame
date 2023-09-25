@@ -14,7 +14,7 @@ int main( int argc, char* argv[] ) {
     Visual::InitScreen(&Game::MainScreen, &Game::windowTitle, 
             &Game::windowSize);
 
-    Visual::LoadImageSurface( &Game::Background, true);
+    Visual::LoadImageSurface( &Game::Background );
     Visual::LoadImageSurface( &Game::Character );
 
     // Add multi threading/make each loop take 10ms to stop it from using

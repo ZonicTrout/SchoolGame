@@ -29,7 +29,7 @@ Utils::Image Game::Background {
 
 Utils::Image Game::Character {
     .imagePath = "resources/AmyGoodSize.png",
-    .surfaceSize = {176, 176}
+    .surfaceSize = {100, 100}
 };
 
 Utils::Contributor Game::MJ {
@@ -262,8 +262,7 @@ void Visual::StretchImage(Utils::Image** ImageInfo,
 */
 
 // Include Surface for size
-void Visual::LoadImageSurface( Utils::Image* ImageInfo, 
-        bool isBackground) {
+void Visual::LoadImageSurface( Utils::Image* ImageInfo) {
     SDL_Surface* bufferSurface = NULL;
     bufferSurface = IMG_Load(ImageInfo->imagePath.c_str());
     if (bufferSurface == NULL) {
@@ -273,9 +272,6 @@ void Visual::LoadImageSurface( Utils::Image* ImageInfo,
     
     ImageInfo->imageSurface = bufferSurface;
     ImageInfo->surfaceSize = { ImageInfo->imageSurface->h, ImageInfo->imageSurface->w }; 
-    if (isBackground) {
-        //std::cout << "T'is a background" << std::endl;
-    }
 
     if (ImageInfo->imageSurface == NULL) {
         std::string exitMsg{"Surface could not be initialized"};
@@ -284,10 +280,6 @@ void Visual::LoadImageSurface( Utils::Image* ImageInfo,
 }
     
     void Visual::CloseProgram( void ) {
-    // Removed because already done in Utils::Image structure
-    //SDL_FreeSurface( *backgroundPicturePtr );
-    //SDL_DestroyWindow( *mainWindowPtr );
-
     // Calls Destructors for Image Structures
     //Game::MainScreen.~Image();
     //Game::Background.~Image();

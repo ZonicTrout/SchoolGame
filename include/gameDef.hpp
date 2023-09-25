@@ -99,7 +99,7 @@ namespace Visual {
     void InitScreen(Utils::Image* ImageInfo, std::string* title, 
             Utils::Size* windowSize);
     void StretchImage( Utils::Image** ImageInfo, Utils::Size* newSize);
-    void LoadImageSurface( Utils::Image* ImageInfo, bool isBackground=false );
+    void LoadImageSurface( Utils::Image* ImageInfo );
     void CheckKeyDown( SDL_Event* currentEvent, Character* characterToMove );
     void CheckQuit( SDL_Event* currentEvent, bool* quit );
     void CloseProgram( void );
