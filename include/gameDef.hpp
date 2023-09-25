@@ -35,6 +35,12 @@ namespace Utils {
         int y;
     };
 
+    struct Contributor {
+        std::string name;
+        std::string whatTheyDid;
+    };
+    void printContributor ( Utils::Contributor* contributor );
+
     // used for collision detection
     struct Circle {
         Utils::Coordinates centerPoint{0, 0};
@@ -60,9 +66,8 @@ namespace Utils {
 
 class Character {
 private:
-    int pixelsPerMove{0};
 protected:
-public: Utils::Image* spriteInfo;
+    Utils::Image* spriteInfo;
     Utils::Image* mainWindow;
     std::string characterName;
     SDL_Rect spriteRect;
@@ -71,6 +76,7 @@ public: Utils::Image* spriteInfo;
     void MoveSpriteInBotomRightBounds();
     void MoveSpriteInBounds();
 public:
+   int pixelsPerMove{0};
    Utils::Coordinates coords{0, 0};
    Utils::Coordinates bottomCoords{0, 0};
    Utils::Coordinates getCenterOfSprite();
@@ -118,6 +124,9 @@ namespace Game {
 
     extern ::Utils::Image Character;
     extern ::Character Player; 
+
+    extern ::Utils::Contributor MJ;
+    extern ::Utils::Contributor Sylar;
 }
 
 #endif

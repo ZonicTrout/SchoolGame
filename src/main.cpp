@@ -5,9 +5,11 @@
 #include "../include/gameDef.hpp"
 
 int main( int argc, char* argv[] ) {
+    std::string temp;
     for (int i=0; i<argc; i++) {
-        std::cout << "Arg #" << argc << " is, '" << argv[i] << "' " 
-                << std::endl; 
+        //std::cout << "Arg #" << argc << " is, '" << argv[i] << "' " 
+        //        << std::endl; 
+        temp = argv[i];
     }
     Visual::InitScreen(&Game::MainScreen, &Game::windowTitle, 
             &Game::windowSize);
@@ -33,4 +35,6 @@ int main( int argc, char* argv[] ) {
         SleepThread.join();
     }
     Visual::CloseProgram(); 
+    Utils::printContributor (&Game::MJ);
+    Utils::printContributor (&Game::Sylar);
 }

@@ -19,7 +19,7 @@ Utils::Size Game::windowSize = {
 
 Utils::Image Game::MainScreen {
     .surfaceSize = Game::windowSize,
-    .walkAble = { {.x=0, .y=150}, 
+    .walkAble = { {.x=0, .y=50}, 
         {.x=517, .y=720} }
 };
 
@@ -28,9 +28,24 @@ Utils::Image Game::Background {
 };
 
 Utils::Image Game::Character {
-    .imagePath = "resources/BrianGoodSize.png",
+    .imagePath = "resources/AmyGoodSize.png",
     .surfaceSize = {176, 176}
 };
+
+Utils::Contributor Game::MJ {
+    .name = "MJ",
+    .whatTheyDid = "Programmed the game in C++"
+};
+
+Utils::Contributor Game::Sylar {
+    .name = "Sylar Lund",
+    .whatTheyDid = "Made ALL the art for this project"
+};
+
+void Utils::printContributor(Utils::Contributor *contributor) {
+    std::cout  << contributor->name << " " << 
+        contributor->whatTheyDid << "!" << std::endl;
+}
 
 // Deconstructor for Image that I will fix later
 /*
@@ -154,7 +169,7 @@ void Character::drawSprite ( Utils::Image* MainWindowImage) {
         spriteInfo->surfaceSize.height};
 
     characterName = "Amy";
-    std::cout << "Hello There, " << characterName << "!" << std::endl;
+    //std::cout << "Hello There, " << characterName << "!" << std::endl;
 }
 
 Visual::ScreenCoordPlane::ScreenCoordPlane ( Utils::Image* mainWindow ) {
@@ -201,16 +216,21 @@ void Visual::CheckKeyDown (SDL_Event* currentEvent, Character* characterToMove )
         switch (currentKey) {
             case ( SDLK_w):
                 // Do move logic for each case
-                characterToMove->MoveSprite(0, -10);
+                characterToMove->MoveSprite(0, 
+                        -1*(characterToMove->pixelsPerMove));
                 break;
+
             case (SDLK_a):
-                characterToMove->MoveSprite(-10, 0);
+                characterToMove->MoveSprite(
+                        -1*(characterToMove->pixelsPerMove), 0);
                 break;
             case (SDLK_s):
-                characterToMove->MoveSprite(0, 10);
+                characterToMove->MoveSprite(0, 
+                       characterToMove->pixelsPerMove );
                 break;
             case (SDLK_d):
-                characterToMove->MoveSprite(10, 0);
+                characterToMove->MoveSprite( 
+                        (characterToMove->pixelsPerMove), 0);
                 break;
             default:
                 PASS;
@@ -254,7 +274,7 @@ void Visual::LoadImageSurface( Utils::Image* ImageInfo,
     ImageInfo->imageSurface = bufferSurface;
     ImageInfo->surfaceSize = { ImageInfo->imageSurface->h, ImageInfo->imageSurface->w }; 
     if (isBackground) {
-        std::cout << "T'is a background" << std::endl;
+        //std::cout << "T'is a background" << std::endl;
     }
 
     if (ImageInfo->imageSurface == NULL) {
