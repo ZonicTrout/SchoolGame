@@ -2,7 +2,7 @@ CC = clang++
 source = $(wildcard src/*.c*)
 LIB = -lSDL2 -lSDL2_image -Iresources -Iinclude
 NOWARN_FLAGS = $(LIB)
-FLAGS = -Wall -Wextra -Wpedantic $(LIB) 
+FLAGS = -Wall -Wextra $(LIB) 
 EXEC = game
 
 compile = $(CC) $(source) -o $(EXEC)

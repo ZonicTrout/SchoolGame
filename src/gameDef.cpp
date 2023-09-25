@@ -28,9 +28,12 @@ Utils::Image Game::Background {
 };
 
 Utils::Image Game::Character {
-    .imagePath = "resources/BrianBigBlue.png"
+    .imagePath = "resources/BrianBigBlue.png",
+    .surfaceSize = {176, 176}
 };
 
+// Deconstructor for Image that I will fix later
+/*
 Utils::Image::~Image() {
     if ( imageSurface != NULL ) {
         SDL_FreeSurface(imageSurface);
@@ -39,6 +42,7 @@ Utils::Image::~Image() {
         SDL_DestroyWindow(window);
     }
 }
+*/
 
 ::Character Game::Player( &Game::Character, &Game::MainScreen,
         {Game::windowSize.width / 2 ,Game::windowSize.height / 2}, 
@@ -72,27 +76,25 @@ Utils::Circle Character::getCollisionCircle() {
 }
 
 void Character::syncBottomCoords() {
-    bottomCoords = { coords.x+mainWindow->surfaceSize.width,
-        coords.y+mainWindow->surfaceSize.height };
+    bottomCoords = { coords.x+spriteInfo->surfaceSize.width,
+        coords.y+spriteInfo->surfaceSize.height };
 }
 
 void Character::syncTopCoords() {
-    coords = { bottomCoords.x-mainWindow->surfaceSize.width,
-        bottomCoords.y-mainWindow->surfaceSize.height };
+    coords = { bottomCoords.x-spriteInfo->surfaceSize.width,
+        bottomCoords.y-spriteInfo->surfaceSize.height };
 }
 
 void Character::MoveSpriteInBounds() {
     // Check if Character X Coord is less than the walkable minimum, and if so sets it
     // to the minimum
     
-    // TODO 
-    // There is a bug when X is changed and Y is not working properly
-    
     if ( coords.x <= mainWindow->walkAble.topLeftCoords.x)  {
         coords.x = mainWindow->walkAble.topLeftCoords.x;
     }
     // Check if Character Y Coord is less than the walkable minimum, and if so sets it
     // to the minimum
+    
     if ( coords.y <= mainWindow->walkAble.topLeftCoords.y)  {
         coords.y = mainWindow->walkAble.topLeftCoords.y;
     }
@@ -106,9 +108,10 @@ void Character::MoveSpriteInBounds() {
 
     // Check if Character X Coord is greater than the maximum walkable X, and if so
     // sets it to the max
-    if ( coords.y >= mainWindow->walkAble.bottomRightCoords.y ) {
-        coords.y = mainWindow->walkAble.bottomRightCoords.y;
+    if ( bottomCoords.y >= mainWindow->walkAble.bottomRightCoords.y ) {
+        bottomCoords.y = mainWindow->walkAble.bottomRightCoords.y;
     }
+    
     syncTopCoords();
 }
 
@@ -150,7 +153,7 @@ void Character::drawSprite ( Utils::Image* MainWindowImage) {
     spriteRect = {coords.x, coords.y, spriteInfo->surfaceSize.width,
         spriteInfo->surfaceSize.height};
 
-    characterName = "Mable";
+    characterName = "Amy";
     std::cout << "Hello There, " << characterName << "!" << std::endl;
 }
 
@@ -240,7 +243,7 @@ void Visual::StretchImage(Utils::Image** ImageInfo,
 
 // Include Surface for size
 void Visual::LoadImageSurface( Utils::Image* ImageInfo, 
-        bool isBackground, Utils::Image* MainWindow) {
+        bool isBackground) {
     SDL_Surface* bufferSurface = NULL;
     bufferSurface = IMG_Load(ImageInfo->imagePath.c_str());
     if (bufferSurface == NULL) {
@@ -251,7 +254,6 @@ void Visual::LoadImageSurface( Utils::Image* ImageInfo,
     ImageInfo->imageSurface = bufferSurface;
     ImageInfo->surfaceSize = { ImageInfo->imageSurface->h, ImageInfo->imageSurface->w }; 
     if (isBackground) {
-        //Visual::StretchImage(&ImageInfo, &MainWindow->surfaceSize);
         std::cout << "T'is a background" << std::endl;
     }
 
@@ -267,9 +269,14 @@ void Visual::LoadImageSurface( Utils::Image* ImageInfo,
     //SDL_DestroyWindow( *mainWindowPtr );
 
     // Calls Destructors for Image Structures
-    Game::MainScreen.~Image();
-    Game::Background.~Image();
-    Game::Character.~Image();
+    //Game::MainScreen.~Image();
+    //Game::Background.~Image();
+    //Game::Character.~Image();
+
+    SDL_FreeSurface(Game::MainScreen.imageSurface);
+    SDL_FreeSurface(Game::Background.imageSurface);
+    SDL_FreeSurface(Game::Character.imageSurface);
+    SDL_DestroyWindow(Game::MainScreen.window);
 
     SDL_Quit(); 
 }

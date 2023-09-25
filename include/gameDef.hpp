@@ -51,7 +51,10 @@ namespace Utils {
         SDL_Window* window{NULL};
         Utils::Size surfaceSize{0, 0};
         Utils::Rectangle walkAble{  {0, 0}, {0, 0} };
-        ~Image();
+       
+        //TODO 
+        // Need to fix first
+        //~Image();
     };
 }
 
@@ -59,7 +62,7 @@ class Character {
 private:
     int pixelsPerMove{0};
 protected:
-    Utils::Image* spriteInfo;
+public: Utils::Image* spriteInfo;
     Utils::Image* mainWindow;
     std::string characterName;
     SDL_Rect spriteRect;
@@ -90,8 +93,7 @@ namespace Visual {
     void InitScreen(Utils::Image* ImageInfo, std::string* title, 
             Utils::Size* windowSize);
     void StretchImage( Utils::Image** ImageInfo, Utils::Size* newSize);
-    void LoadImageSurface( Utils::Image* ImageInfo, bool isBackground=false,
-           Utils::Image* MainWindow=NULL );
+    void LoadImageSurface( Utils::Image* ImageInfo, bool isBackground=false );
     void CheckKeyDown( SDL_Event* currentEvent, Character* characterToMove );
     void CheckQuit( SDL_Event* currentEvent, bool* quit );
     void CloseProgram( void );
