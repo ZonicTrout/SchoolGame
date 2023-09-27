@@ -3,6 +3,7 @@
 //
 
 #include "../include/gameDef.hpp"
+#include "../include/initialize.hpp"
 
 int main( int argc, char* argv[] ) {
     std::string temp;

@@ -2,6 +2,7 @@
 // GameDef.cpp
 //
 #include "../include/gameDef.hpp"
+#include "../include/initialize.hpp"
 #include <SDL2/SDL_surface.h>
 
 void Utils::exitProgram(std::string* exitMsg, int exitCode) {
@@ -9,7 +10,7 @@ void Utils::exitProgram(std::string* exitMsg, int exitCode) {
     exit(exitCode);
 }
 
-
+/*
 std::string Game::windowTitle = "Brian's Hunt";
 
 Utils::Size Game::windowSize = {
@@ -23,7 +24,7 @@ Utils::Image Game::MainScreen {
         {.x=517, .y=720} }
 };
 
-Utils::Image Game::Background {
+Utils::Image Game::Background = {
     .imagePath = "resources/BackgroundFullBig.png",
 };
 
@@ -41,23 +42,23 @@ Utils::Contributor Game::Sylar {
     .name = "Sylar Lund",
     .whatTheyDid = "Made ALL the art for this project"
 };
-
+*/
 void Utils::printContributor(Utils::Contributor *contributor) {
     std::cout  << contributor->name << " " << 
         contributor->whatTheyDid << "!" << std::endl;
 }
 
 // Deconstructor for Image that I will fix later
-/*
 Utils::Image::~Image() {
     if ( imageSurface != NULL ) {
         SDL_FreeSurface(imageSurface);
+        imageSurface = NULL;
     }
     if ( window != NULL ) {
         SDL_DestroyWindow(window);
+        window = NULL;
     }
 }
-*/
 
 ::Character Game::Player( &Game::Character, &Game::MainScreen,
         {Game::windowSize.width / 2 ,Game::windowSize.height / 2}, 

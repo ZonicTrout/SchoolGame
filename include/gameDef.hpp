@@ -2,17 +2,16 @@
 // GameDef.hpp
 //
 
-#include <iostream>
-#include <unistd.h> 
-#include <thread>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+#ifndef GAME_DEF_HPP
+#define GAME_DEF_HPP
+
+#include "includeLibs.hpp"
+
+//#include "initialize.hpp"
 
 // I think I no longer need
 //#include "SDL2_rotozoom.h"
 
-#ifndef GAME_DEF_HPP
-#define GAME_DEF_HPP
 
 #define PASS /**/
 
@@ -60,7 +59,7 @@ namespace Utils {
        
         //TODO 
         // Need to fix first
-        //~Image();
+        ~Image();
     };
 }
 
@@ -113,20 +112,6 @@ namespace Visual {
     };
 }
 
-namespace Game {
-    // TODO convert the followinf to pointers so it is easier to free
-    // them when Visual::CloseProgram() is called
-    extern ::Utils::Image MainScreen;
-    extern ::Utils::Image Background;
 
-    extern ::std::string windowTitle;
-    extern ::Utils::Size windowSize;
-
-    extern ::Utils::Image Character;
-    extern ::Character Player; 
-
-    extern ::Utils::Contributor MJ;
-    extern ::Utils::Contributor Sylar;
-}
 
 #endif
